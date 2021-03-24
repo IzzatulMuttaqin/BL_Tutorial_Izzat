@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BL_Tutorial_Izzat
 {
@@ -20,32 +22,40 @@ namespace BL_Tutorial_Izzat
             [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
             ILogger log)
         {
-            var query = new SqlQuerySpec("SELECT * FROM c");
-            var pk = new PartitionKey("Data2");
-            var options = new FeedOptions() { PartitionKey = pk };
-            var data = documentClient.CreateDocumentQuery(UriFactory.CreateDocumentCollectionUri("Data2", "Course2"), query, options);
-            return new OkObjectResult(data);
+            using var classRep = new CosmosDB.AccessCosmos.ClassRepository(documentClient);
+            var data = await classRep.GetAsync();
+            return new OkObjectResult(data.Items);
+        }
+
+        [FunctionName("GetClassByIdNexus")]
+        public static async Task<IActionResult> GetClassByIdNexus(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "CourseNexus/{id}/")] HttpRequest req,
+            [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
+            string id,
+            ILogger log)
+        {
+            using var classRep = new CosmosDB.AccessCosmos.ClassRepository(documentClient);
+            var data = await classRep.GetAsync(predicate: p => p.Id == id);
+            return new OkObjectResult(data.Items.FirstOrDefault());
         }
 
         [FunctionName("DeleteDataById")]
         public static async Task<IActionResult> DeleteDataById(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "delete/data/{id}")] HttpRequest req,
-            [CosmosDB(
-                databaseName: "Data2",
-                collectionName: "Course2",
-                ConnectionStringSetting = "cosmos-bl-tutorial-serverless",
-                Id = "{id}",
-                PartitionKey = "Data2")] Document document,
             [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
+            string id,
             ILogger log)
         {
-            if (document == null)
-                return new BadRequestResult();
-
-            log.LogInformation(document.ToString());
-            await documentClient.DeleteDocumentAsync(document.SelfLink, new RequestOptions() { PartitionKey = new PartitionKey("Data2") });
-
-            return new OkResult();
+            try
+            {
+                using var classRep = new CosmosDB.AccessCosmos.ClassRepository(documentClient);
+                classRep.DeleteAsync(id);
+                return new OkResult();
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult($"Bad Request Exception : {e.Message}");
+            }
         }
 
         [FunctionName("CreateData")]
@@ -57,30 +67,20 @@ namespace BL_Tutorial_Izzat
             var content = await new StreamReader(req.Body).ReadToEndAsync();
 
             DTOClass myClass = JsonConvert.DeserializeObject<DTOClass>(content);
-            log.LogInformation("Object");
-            if (myClass.ClassCode == null || myClass.ClassCode == null)
+            if (myClass.ClassCode == null || myClass.Description == null)
                 return new BadRequestResult();
 
-            var book = new DTOClass
-            {
-                ClassCode = myClass.ClassCode,
-                Description = myClass.Description,
-                PartitionKey = "Data2"
-            };
-            await documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri("Data2", "Course2"), book);
+            var class1 = new DTOClass() { ClassCode = myClass.ClassCode, Description = myClass.Description };
 
-            return new OkResult();
+            using var classRep = new CosmosDB.AccessCosmos.ClassRepository(documentClient);
+            var data = await classRep.CreateAsync(class1);
+
+            return new OkObjectResult(data);
         }
 
         [FunctionName("UpdateDataById")]
         public static async Task<IActionResult> UpdateDataById(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "update/data/{id}")] HttpRequest req,
-            [CosmosDB(
-                databaseName: "Data2",
-                collectionName: "Course2",
-                ConnectionStringSetting = "cosmos-bl-tutorial-serverless",
-                Id = "{id}",
-                PartitionKey = "Data2")] Document document,
             [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
             string id,
             ILogger log)
@@ -89,21 +89,22 @@ namespace BL_Tutorial_Izzat
 
             DTOClass myClass = JsonConvert.DeserializeObject<DTOClass>(content);
 
-            if (document == null || myClass.ClassCode == null || myClass.ClassCode == null)
-                return new BadRequestResult();
+            if (myClass.ClassCode == null || myClass.ClassCode == null)
+                return new BadRequestObjectResult($"Bad Request Exception data is not complete.");
 
-            var book = new DTOClass
+            try
             {
-                Id = id,
-                ClassCode = myClass.ClassCode,
-                Description = myClass.Description,
-                PartitionKey = "Data2"
-            };
+                var class1 = new DTOClass() { ClassCode = myClass.ClassCode, Description = myClass.Description };
 
-            await documentClient.DeleteDocumentAsync(document.SelfLink, new RequestOptions() { PartitionKey = new PartitionKey("Data2") });
-            await documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri("Data2", "Course2"), book);
+                using var classRep = new CosmosDB.AccessCosmos.ClassRepository(documentClient);
+                var data = await classRep.UpdateAsync(id, class1);
 
-            return new OkResult();
+                return new OkObjectResult(data);
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(e.Message);
+            }
         }
     }
 }
