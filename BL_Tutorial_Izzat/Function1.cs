@@ -11,8 +11,10 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents;
 using System.Collections.Generic;
 using System.Linq;
+using BL_Tutorial_Izzat.DAL.Repositories;
+using BL_Tutorial_Izzat.DAL.Models;
 
-namespace BL_Tutorial_Izzat
+namespace BL_Tutorial_Izzat.API
 {
     public static class Function1
     {
@@ -22,7 +24,7 @@ namespace BL_Tutorial_Izzat
             [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
             ILogger log)
         {
-            using var classRep = new CosmosDB.AccessCosmos.ClassRepository(documentClient);
+            using var classRep = new AccessCosmos.ClassRepository(documentClient);
             var data = await classRep.GetAsync();
             return new OkObjectResult(data.Items);
         }
@@ -34,7 +36,7 @@ namespace BL_Tutorial_Izzat
             string id,
             ILogger log)
         {
-            using var classRep = new CosmosDB.AccessCosmos.ClassRepository(documentClient);
+            using var classRep = new AccessCosmos.ClassRepository(documentClient);
             var data = await classRep.GetAsync(predicate: p => p.Id == id);
             return new OkObjectResult(data.Items.FirstOrDefault());
         }
@@ -48,7 +50,7 @@ namespace BL_Tutorial_Izzat
         {
             try
             {
-                using var classRep = new CosmosDB.AccessCosmos.ClassRepository(documentClient);
+                using var classRep = new AccessCosmos.ClassRepository(documentClient);
                 classRep.DeleteAsync(id);
                 return new OkResult();
             }
@@ -72,7 +74,7 @@ namespace BL_Tutorial_Izzat
 
             var class1 = new DTOClass() { ClassCode = myClass.ClassCode, Description = myClass.Description };
 
-            using var classRep = new CosmosDB.AccessCosmos.ClassRepository(documentClient);
+            using var classRep = new AccessCosmos.ClassRepository(documentClient);
             var data = await classRep.CreateAsync(class1);
 
             return new OkObjectResult(data);
@@ -96,7 +98,7 @@ namespace BL_Tutorial_Izzat
             {
                 var class1 = new DTOClass() { ClassCode = myClass.ClassCode, Description = myClass.Description };
 
-                using var classRep = new CosmosDB.AccessCosmos.ClassRepository(documentClient);
+                using var classRep = new AccessCosmos.ClassRepository(documentClient);
                 var data = await classRep.UpdateAsync(id, class1);
 
                 return new OkObjectResult(data);

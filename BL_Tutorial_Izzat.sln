@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL_Tutorial_Izzat", "BL_Tutorial_Izzat\BL_Tutorial_Izzat.csproj", "{3A9C1C54-91F9-44D9-B21B-26372C126509}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL_Tutorial_Izzat.API", "BL_Tutorial_Izzat\BL_Tutorial_Izzat.API.csproj", "{3A9C1C54-91F9-44D9-B21B-26372C126509}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL_Tutorial_Izzat.DAL", "BL_Tutorial_Izzat.DAL\BL_Tutorial_Izzat.DAL.csproj", "{5F193A25-9A8F-46D7-90A0-CA3617D58B5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL_Tutorial_Izzat.BLL", "BL_Tutorial_Izzat.BLL\BL_Tutorial_Izzat.BLL.csproj", "{96F41BB8-3ACD-454C-BE3B-E4006302330A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL_Tutorial_Izzat.BLL.Test", "BL_Tutorial_Izzat.BLL.Test\BL_Tutorial_Izzat.BLL.Test.csproj", "{18D77DF2-5E17-4463-A3AE-B0B2AD19CC16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{3A9C1C54-91F9-44D9-B21B-26372C126509}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A9C1C54-91F9-44D9-B21B-26372C126509}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A9C1C54-91F9-44D9-B21B-26372C126509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F193A25-9A8F-46D7-90A0-CA3617D58B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F193A25-9A8F-46D7-90A0-CA3617D58B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F193A25-9A8F-46D7-90A0-CA3617D58B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F193A25-9A8F-46D7-90A0-CA3617D58B5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96F41BB8-3ACD-454C-BE3B-E4006302330A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96F41BB8-3ACD-454C-BE3B-E4006302330A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96F41BB8-3ACD-454C-BE3B-E4006302330A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96F41BB8-3ACD-454C-BE3B-E4006302330A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18D77DF2-5E17-4463-A3AE-B0B2AD19CC16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18D77DF2-5E17-4463-A3AE-B0B2AD19CC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18D77DF2-5E17-4463-A3AE-B0B2AD19CC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18D77DF2-5E17-4463-A3AE-B0B2AD19CC16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

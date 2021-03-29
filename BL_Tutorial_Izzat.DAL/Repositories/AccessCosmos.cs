@@ -1,11 +1,9 @@
-
+using BL_Tutorial_Izzat.DAL.Models;
 using Microsoft.Azure.Documents.Client;
 using Nexus.Base.CosmosDBRepository;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace BL_Tutorial_Izzat.CosmosDB
+namespace BL_Tutorial_Izzat.DAL.Repositories
 {
     public class AccessCosmos
     {

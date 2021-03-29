@@ -2,7 +2,7 @@
 using Nexus.Base.CosmosDBRepository;
 using System;
 
-namespace BL_Tutorial_Izzat
+namespace BL_Tutorial_Izzat.DAL.Models
 {
     public class NotificationRecipient : ModelBase
     {

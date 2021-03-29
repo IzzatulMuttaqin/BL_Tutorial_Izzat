@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BL_Tutorial_Izzat.DAL.Models;
+using BL_Tutorial_Izzat.DAL.Repositories;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
-namespace BL_Tutorial_Izzat
+namespace BL_Tutorial_Izzat.API
 {
     public static class TestEvhBL
     {
@@ -18,7 +20,7 @@ namespace BL_Tutorial_Izzat
             ILogger log)
         {
             var exceptions = new List<Exception>();
-            using var classRep = new CosmosDB.AccessCosmos.NotificationRepository(documentClient);
+            using var classRep = new AccessCosmos.ClassRepository(documentClient);
 
             foreach (EventData eventData in events)
             {

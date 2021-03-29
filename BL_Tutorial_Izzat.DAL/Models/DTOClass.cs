@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Nexus.Base.CosmosDBRepository;
 
-namespace BL_Tutorial_Izzat
+namespace BL_Tutorial_Izzat.DAL.Models
 {
     public class DTOClass : ModelBase
     {

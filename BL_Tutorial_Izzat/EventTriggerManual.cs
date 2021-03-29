@@ -11,7 +11,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace BL_Tutorial_Izzat
+namespace BL_Tutorial_Izzat.API
 {
     public static class EventTriggerManual
     {
