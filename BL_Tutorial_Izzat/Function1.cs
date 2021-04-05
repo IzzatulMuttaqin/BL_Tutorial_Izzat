@@ -13,10 +13,14 @@ using System.Collections.Generic;
 using System.Linq;
 using BL_Tutorial_Izzat.DAL.Repositories;
 using BL_Tutorial_Izzat.DAL.Models;
+using BL_Tutorial_Izzat.BLL;
+using Microsoft.Azure.Cosmos;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using static BL_Tutorial_Izzat.DAL.Repositories.AccessCosmos;
 
 namespace BL_Tutorial_Izzat.API
 {
-    public static class Function1
+    public class Function1
     {
         // TODO: implement DI utk nexus 3
         // TODO: tidak pakai DocumentClient documentClient => bukan nexus 2
@@ -24,71 +28,66 @@ namespace BL_Tutorial_Izzat.API
         // TODO: belum ada swagger request dan response
         [FunctionName("GetAllClass")]
         public static async Task<IActionResult> GetAllClass(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "all/")] HttpRequest req,
             ILogger log)
         {
-            using var classRep = new AccessCosmos.ClassRepository(documentClient);
-            var data = await classRep.GetAsync();
-            return new OkObjectResult(data.Items);
+            FetchService fetchService = new FetchService(new ClassRepository());
+            var data = await fetchService.GetAllDtoClass();
+            return new OkObjectResult(data);
         }
 
         [FunctionName("GetClassByIdNexus")]
         public static async Task<IActionResult> GetClassByIdNexus(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "CourseNexus/{id}/")] HttpRequest req,
-            [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "course/nexus/{id}/")] HttpRequest req,
             string id,
             ILogger log)
         {
-            using var classRep = new AccessCosmos.ClassRepository(documentClient);
-            var data = await classRep.GetAsync(predicate: p => p.Id == id);
-            return new OkObjectResult(data.Items.FirstOrDefault());
+            FetchService fetchService = new FetchService(new ClassRepository());
+            var data = await fetchService.GetDtoClassById(id);
+            return new OkObjectResult(data);
         }
 
         [FunctionName("DeleteDataById")]
         public static async Task<IActionResult> DeleteDataById(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "delete/data/{id}")] HttpRequest req,
-            [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
             string id,
             ILogger log)
         {
-            try
-            {
-                using var classRep = new AccessCosmos.ClassRepository(documentClient);
-                classRep.DeleteAsync(id);
-                return new OkResult();
-            }
-            catch (Exception e)
-            {
-                return new BadRequestObjectResult($"Bad Request Exception : {e.Message}");
-            }
+            FetchService fetchService = new FetchService(new ClassRepository());
+            try { fetchService.DeleteDtoClass(id); return new OkResult(); }
+            catch { return new BadRequestResult(); }
         }
 
         [FunctionName("CreateData")]
         // TODO: penamaan routing tidak konsisten: ada yang PascalCase, lowercase, dan null
         public static async Task<IActionResult> CreateData(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "create/data")] HttpRequest req,
-            [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
             ILogger log)
         {
             var content = await new StreamReader(req.Body).ReadToEndAsync();
 
             DTOClass myClass = JsonConvert.DeserializeObject<DTOClass>(content);
-            if (myClass.ClassCode == null || myClass.Description == null)
+
+            if (myClass.ClassCode == null || myClass.ClassCode == null)
                 return new BadRequestResult();
 
-            var class1 = new DTOClass() { ClassCode = myClass.ClassCode, Description = myClass.Description };
+            var body = new DTOClass
+            {
+                ClassCode = myClass.ClassCode,
+                Description = myClass.Description,
+            };
 
-            using var classRep = new AccessCosmos.ClassRepository(documentClient);
-            var data = await classRep.CreateAsync(class1);
 
-            return new OkObjectResult(data);
+            FetchService fetchService = new FetchService(new ClassRepository());
+
+            var result = await fetchService.CreateNewDtoClass(body);
+            log.LogInformation(result.DocumentNamespace);
+            return new OkObjectResult(result);
         }
 
         [FunctionName("UpdateDataById")]
         public static async Task<IActionResult> UpdateDataById(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "update/data/{id}")] HttpRequest req,
-            [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
             string id,
             ILogger log)
         {
@@ -97,21 +96,22 @@ namespace BL_Tutorial_Izzat.API
             DTOClass myClass = JsonConvert.DeserializeObject<DTOClass>(content);
 
             if (myClass.ClassCode == null || myClass.ClassCode == null)
-                return new BadRequestObjectResult($"Bad Request Exception data is not complete.");
+                return new BadRequestResult();
 
-            try
+            var body = new DTOClass
             {
-                var class1 = new DTOClass() { ClassCode = myClass.ClassCode, Description = myClass.Description };
+                Id = id,
+                ClassCode = myClass.ClassCode,
+                Description = myClass.Description,
+            };
 
-                using var classRep = new AccessCosmos.ClassRepository(documentClient);
-                var data = await classRep.UpdateAsync(id, class1);
+            FetchService fetchService = new FetchService(new ClassRepository());
 
-                return new OkObjectResult(data);
-            }
-            catch (Exception e)
-            {
-                return new BadRequestObjectResult(e.Message);
-            }
+            log.LogInformation(body.ClassCode);
+            log.LogInformation(id);
+
+            var result = await fetchService.UpdateDtoClas(id, body);
+            return new OkObjectResult(result);
         }
     }
 }

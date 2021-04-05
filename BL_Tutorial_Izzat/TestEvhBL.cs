@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using BL_Tutorial_Izzat.DAL.Models;
 using BL_Tutorial_Izzat.DAL.Repositories;
-using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
+using BL_Tutorial_Izzat.BLL;
 
 namespace BL_Tutorial_Izzat.API
 {
@@ -16,11 +16,9 @@ namespace BL_Tutorial_Izzat.API
     {
         [FunctionName("TestEvhBL")]
         public static async Task Run([EventHubTrigger("dtoclassrecipient", Connection = "evhBLTutorialConn")] EventData[] events,
-            [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,
             ILogger log)
         {
             var exceptions = new List<Exception>();
-            using var classRep = new AccessCosmos.ClassRepository(documentClient);
 
             foreach (EventData eventData in events)
             {
@@ -28,13 +26,8 @@ namespace BL_Tutorial_Izzat.API
                 {
                     string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
 
-                    var notif = new NotificationRecipient()
-                    {
-                        MessageBody = messageBody,
-                        DateSaved = DateTime.Now
-                    };
-                    log.LogInformation($"C# Event Hub trigger function processed a message: {messageBody}");
-                    await classRep.CreateAsync(notif);
+                    var service = new NotificationRecipientService();
+                    service.CreateNewNotification(messageBody);
                 }
                 catch (Exception e)
                 {

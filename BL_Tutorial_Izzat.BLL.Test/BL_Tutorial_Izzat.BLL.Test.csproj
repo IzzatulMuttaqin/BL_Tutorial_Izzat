@@ -6,12 +6,15 @@
 
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.16.1" />
+    <PackageReference Include="Nexus.Base.CosmosDBRepository" Version="2020.11.9.1" />
     <PackageReference Include="xunit.assert" Version="2.4.1" />
     <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BL_Tutorial_Izzat.BLL\BL_Tutorial_Izzat.BLL.csproj" />
     <ProjectReference Include="..\BL_Tutorial_Izzat.DAL\BL_Tutorial_Izzat.DAL.csproj" />
+    <ProjectReference Include="..\BL_Tutorial_Izzat\BL_Tutorial_Izzat.API.csproj" />
   </ItemGroup>
 
 </Project>
