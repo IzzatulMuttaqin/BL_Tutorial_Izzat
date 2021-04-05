@@ -15,6 +15,7 @@ namespace BL_Tutorial_Izzat.API
 {
     public static class EventTriggerManual
     {
+        // TODO: dibiaskan rapih dalam manajemen class, class d tempatkan pada folder2 sesuai objective
         [FunctionName("PostDataEventGrid")]
         public static async Task<IActionResult> EventToGridRun(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "trigger/event/hub")] HttpRequest req,

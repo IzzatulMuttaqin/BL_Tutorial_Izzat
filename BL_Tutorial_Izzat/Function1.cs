@@ -18,6 +18,10 @@ namespace BL_Tutorial_Izzat.API
 {
     public static class Function1
     {
+        // TODO: implement DI utk nexus 3
+        // TODO: tidak pakai DocumentClient documentClient => bukan nexus 2
+        // TODO: coba pakai automapper utk map dari class database ke DTO
+        // TODO: belum ada swagger request dan response
         [FunctionName("GetAllClass")]
         public static async Task<IActionResult> GetAllClass(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
@@ -61,6 +65,7 @@ namespace BL_Tutorial_Izzat.API
         }
 
         [FunctionName("CreateData")]
+        // TODO: penamaan routing tidak konsisten: ada yang PascalCase, lowercase, dan null
         public static async Task<IActionResult> CreateData(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "create/data")] HttpRequest req,
             [CosmosDB(ConnectionStringSetting = "cosmos-bl-tutorial-serverless")] DocumentClient documentClient,

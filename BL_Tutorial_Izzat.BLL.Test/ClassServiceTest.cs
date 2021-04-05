@@ -46,5 +46,7 @@ namespace BL_Tutorial_Izzat.BLL.Test
 
             }
         }
+
+        // TODO: crud yang lain jg d test ya
     }
 }

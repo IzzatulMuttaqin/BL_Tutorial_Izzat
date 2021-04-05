@@ -22,5 +22,7 @@ namespace BL_Tutorial_Izzat.BLL
         {
             return await _repository.GetByIdAsync(id, pk);
         }
+
+        // TODO: mana CRUD yang lain?
     }
 }
