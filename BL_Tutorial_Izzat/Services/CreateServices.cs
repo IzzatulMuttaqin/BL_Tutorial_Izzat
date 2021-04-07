@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using BL_Tutorial_Izzat.API.DTO;
 using BL_Tutorial_Izzat.BLL;
 using BL_Tutorial_Izzat.DAL.Models;
@@ -38,6 +39,7 @@ namespace BL_Tutorial_Izzat.API.Services
         // TODO: penamaan routing tidak konsisten: ada yang PascalCase, lowercase, dan null
         public async Task<IActionResult> CreateData(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "create/data")] HttpRequest req,
+            [RequestBodyType(typeof(DTOClass), "Create request")]
             ILogger log)
         {
             try

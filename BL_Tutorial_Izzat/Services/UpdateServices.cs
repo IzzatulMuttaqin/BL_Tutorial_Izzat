@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using BL_Tutorial_Izzat.API.DTO;
 using BL_Tutorial_Izzat.BLL;
 using BL_Tutorial_Izzat.DAL.Models;
@@ -37,6 +38,7 @@ namespace BL_Tutorial_Izzat.API.Services
         [FunctionName("UpdateDataById")]
         public async Task<IActionResult> UpdateDataById(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "update/data/{id}")] HttpRequest req,
+            [RequestBodyType(typeof(DTOClass), "Update request")]
             string id,
             ILogger log)
         {
