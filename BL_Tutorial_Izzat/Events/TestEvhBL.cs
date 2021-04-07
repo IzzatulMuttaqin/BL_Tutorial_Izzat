@@ -10,7 +10,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using BL_Tutorial_Izzat.BLL;
 
-namespace BL_Tutorial_Izzat.API
+namespace BL_Tutorial_Izzat.API.Events
 {
     public static class TestEvhBL
     {

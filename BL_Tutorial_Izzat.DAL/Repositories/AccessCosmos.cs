@@ -16,8 +16,8 @@ namespace BL_Tutorial_Izzat.DAL.Repositories
 
         public class ClassRepository : DocumentDBRepository<DTOClass>
         {
-            public ClassRepository() :
-                base(databaseId: _DB, endPoint: _cosmosDBEndpoint, key: _cosmosDBKey, createDatabaseIfNotExist: true,
+            public ClassRepository(CosmosClient client) :
+                base(databaseId: _DB, client, createDatabaseIfNotExist: true,
                     eventGridEndPoint: _eventGridEndPoint, eventGridKey: _eventGridKey)
             { }
         }

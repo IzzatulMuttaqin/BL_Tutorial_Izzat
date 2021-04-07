@@ -12,36 +12,98 @@ namespace BL_Tutorial_Izzat.BLL.Test
 {
     public class FetchServiceTest
     {
-        [Theory]
-        [InlineData("1")]
-        [InlineData("3")]
-        public async Task GetDataById_ResultFound(string id)
+        public class GetServiceTest
         {
-            // arrange
-            var repo = new Mock<IDocumentDBRepository<DTOClass>>();
+            [Theory]
+            [InlineData("1")]
+            [InlineData("3")]
+            public async Task GetDataById(string id)
+            {
+                // arrange
+                var repo = new Mock<IDocumentDBRepository<DTOClass>>();
 
-            IEnumerable<DTOClass> classes = new List<DTOClass>
+                IEnumerable<DTOClass> classes = new List<DTOClass>
                 {
                     {new DTOClass() { Id = "1", Description = "abcd"} },
                     {new DTOClass() { Id = "2", Description = "xyz0"} }
                 };
 
-            var classData = classes.Where(o => o.Id == id).FirstOrDefault();
+                var classData = classes.Where(o => o.Id == id).FirstOrDefault();
 
-            repo.Setup(c => c.GetByIdAsync(
-                It.IsAny<string>(),
-                It.IsAny<Dictionary<string, string>>()
-            )).Returns(
-                Task.FromResult<DTOClass>(classData)
-            );
+                repo.Setup(c => c.GetByIdAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<Dictionary<string, string>>()
+                )).Returns(
+                    Task.FromResult<DTOClass>(classData)
+                );
 
-            var svc = new FetchService(repo.Object);
+                var svc = new FetchService(repo.Object);
 
-            // act
-            var act = await svc.GetDtoClassById("");
+                // act
+                var act = await svc.GetDtoClassById("");
 
-            // assert
-            Assert.Equal(classData, act);
+                // assert
+                Assert.Equal(classData, act);
+            }
+        }
+
+        public class CreateServiceTest
+        {
+            [Fact]
+            public async Task CreateData()
+            {
+                var repo = new Mock<IDocumentDBRepository<DTOClass>>();
+
+                var data = new DTOClass
+                {
+                    Id = "abcdef",
+                    ClassCode = "codes-xx",
+                    Description = "desc"
+                };
+
+                repo.Setup(c => c.CreateAsync(
+                    It.IsAny<DTOClass>(),
+                    It.IsAny<EventGridOptions>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()
+                )).Returns(Task.FromResult(data));
+
+                var svc = new FetchService(repo.Object);
+
+                var act = await svc.CreateNewDtoClass(data);
+                Assert.Equal(data.Id, act.Id);
+
+            }
+        }
+
+        public class UpdateServiceTest
+        {
+            [Theory]
+            [InlineData("1")]
+            public async Task UpdateLesson_Updated(string id)
+            {
+                var repo = new Mock<IDocumentDBRepository<DTOClass>>();
+
+                var data = new DTOClass
+                {
+                    Id = "abcdef",
+                    ClassCode = "codes-xx",
+                    Description = "desc"
+                };
+
+                repo.Setup(c => c.UpdateAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<DTOClass>(),
+                    It.IsAny<EventGridOptions>(),
+                    It.IsAny<string>()
+                )).Returns(Task.FromResult(data));
+
+                var svc = new FetchService(repo.Object);
+
+                var act = await svc.UpdateDtoClas(id, data);
+                Assert.Equal(data.ClassCode, act.ClassCode);
+
+            }
         }
     }
 }

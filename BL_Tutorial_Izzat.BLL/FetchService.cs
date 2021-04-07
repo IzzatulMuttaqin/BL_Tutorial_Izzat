@@ -40,9 +40,16 @@ namespace BL_Tutorial_Izzat.BLL
             return await repository.UpdateAsync(id, dto);
         }
 
-        public async void DeleteDtoClass(string id)
+        public async Task<string> DeleteDtoClass(string id)
         {
-            await repository.DeleteAsync(id);
+            try
+            {
+                await repository.DeleteAsync(id);
+                return "item deleted";
+            } catch
+            {
+                return "fail to delete";
+            }
         }
     }
 }
