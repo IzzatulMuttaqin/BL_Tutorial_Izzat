@@ -80,7 +80,7 @@ namespace BL_Tutorial_Izzat.BLL.Test
         {
             [Theory]
             [InlineData("1")]
-            public async Task UpdateLesson_Updated(string id)
+            public async Task UpdateData(string id)
             {
                 var repo = new Mock<IDocumentDBRepository<DTOClass>>();
 
@@ -105,10 +105,10 @@ namespace BL_Tutorial_Izzat.BLL.Test
             }
         }
 
-        public class DeleteActivity
+        public class DeleteServiceTest
         {
             [Fact]
-            public async Task DeleteActivity_Success()
+            public async Task DeleteData()
             {                
                 var repo = new Mock<IDocumentDBRepository<DTOClass>>();
 
