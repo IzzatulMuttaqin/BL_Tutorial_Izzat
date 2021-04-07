@@ -102,7 +102,27 @@ namespace BL_Tutorial_Izzat.BLL.Test
 
                 var act = await svc.UpdateDtoClas(id, data);
                 Assert.Equal(data.ClassCode, act.ClassCode);
+            }
+        }
 
+        public class DeleteActivity
+        {
+            [Fact]
+            public async Task DeleteActivity_Success()
+            {                
+                var repo = new Mock<IDocumentDBRepository<DTOClass>>();
+
+                repo.Setup(c => c.DeleteAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<Dictionary<string, string>>(),
+                    It.IsAny<EventGridOptions>()
+                ));
+
+                var svc = new FetchService(repo.Object);
+
+                var act = await svc.DeleteDtoClass("1");
+
+                Assert.Equal("item deleted", act);
             }
         }
     }
