@@ -10,7 +10,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace BL_Tutorial_Izzat.API
+namespace BL_Tutorial_Izzat.API.Configuration
 {
     public static class SwaggerFunctions
     {

@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL_Tutorial_Izzat.API", "BL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL_Tutorial_Izzat.DAL", "BL_Tutorial_Izzat.DAL\BL_Tutorial_Izzat.DAL.csproj", "{5F193A25-9A8F-46D7-90A0-CA3617D58B5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL_Tutorial_Izzat.BLL", "BL_Tutorial_Izzat.BLL\BL_Tutorial_Izzat.BLL.csproj", "{6F16337C-9B0A-40B2-B5C2-E0033E608F59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL_Tutorial_Izzat.BLL", "BL_Tutorial_Izzat.BLL\BL_Tutorial_Izzat.BLL.csproj", "{6F16337C-9B0A-40B2-B5C2-E0033E608F59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL_Tutorial_Izzat.BLL.Test", "BL_Tutorial_Izzat.BLL.Test\BL_Tutorial_Izzat.BLL.Test.csproj", "{9AF53BEC-C11B-41E9-9D10-E571940C3EE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL_Tutorial_Izzat.BLL.Test", "BL_Tutorial_Izzat.BLL.Test\BL_Tutorial_Izzat.BLL.Test.csproj", "{9AF53BEC-C11B-41E9-9D10-E571940C3EE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

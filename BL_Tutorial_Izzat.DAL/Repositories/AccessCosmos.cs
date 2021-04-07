@@ -12,12 +12,11 @@ namespace BL_Tutorial_Izzat.DAL.Repositories
         private static readonly string _eventGridKey = Environment.GetEnvironmentVariable("eventGridEndKey");
         private static readonly string _cosmosDBEndpoint = Environment.GetEnvironmentVariable("CosmosDBEndPoint");
         private static readonly string _cosmosDBKey = Environment.GetEnvironmentVariable("CosmosDBKey");
-        private static readonly string _DB = "Course";
 
         public class ClassRepository : DocumentDBRepository<DTOClass>
         {
             public ClassRepository(CosmosClient client) :
-                base(databaseId: _DB, client, createDatabaseIfNotExist: true,
+                base(databaseId: "Course", client, createDatabaseIfNotExist: true,
                     eventGridEndPoint: _eventGridEndPoint, eventGridKey: _eventGridKey)
             { }
         }
@@ -25,7 +24,7 @@ namespace BL_Tutorial_Izzat.DAL.Repositories
         public class NotificationRepository : DocumentDBRepository<NotificationRecipient>
         {
             public NotificationRepository() :
-                base(databaseId: _DB, endPoint: _cosmosDBEndpoint, key: _cosmosDBKey, createDatabaseIfNotExist: true)
+                base(databaseId: "Course", endPoint: _cosmosDBEndpoint, key: _cosmosDBKey, createDatabaseIfNotExist: true)
             { }
         }
     }

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace BL_Tutorial_Izzat.BLL.Test
+namespace BL_Tutorial_Izzat.BLL.Test.Tests
 {
     public class FetchServiceTest
     {
