@@ -56,7 +56,7 @@ namespace BL_Tutorial_Izzat.BLL.Test
 
                 var data = new DTOClass
                 {
-                    Id = "abcdef",
+                    Id = "1",
                     ClassCode = "codes-xx",
                     Description = "desc"
                 };
@@ -86,7 +86,7 @@ namespace BL_Tutorial_Izzat.BLL.Test
 
                 var data = new DTOClass
                 {
-                    Id = "abcdef",
+                    Id = "1",
                     ClassCode = "codes-xx",
                     Description = "desc"
                 };
